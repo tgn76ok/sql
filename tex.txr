@@ -1,0 +1,241 @@
+create database sistema_bancario;
+
+use sistema_bancario;
+
+create table Banco(
+
+codigo int,
+
+  nome varchar(150),
+
+  primary key(codigo)
+
+);
+
+
+
+create table Agencia(
+
+cod_banco int,
+
+foreign key(cod_banco) references Banco(codigo),
+
+  Numero_agencia int,
+
+  endereco varchar(255),
+
+   
+
+  primary key(Numero_agencia)
+
+);
+
+
+
+create table cliente (
+
+cpf varchar(20),
+
+  Nome varchar(255),
+
+  sexo char(1),
+
+  check(sexo in('m','f')),
+
+  endereco varchar(255),
+
+  primary key(cpf)
+
+);
+
+
+
+create table Conta(
+
+  saldo decimal(13,2),
+
+  tipo_conta int,
+
+  numero_conta char(7),
+
+  num_agencia int,
+
+foreign key(num_agencia) references Agencia(Numero_agencia),
+
+  
+
+  primary key(numero_conta)
+
+
+
+);
+
+create table Historico(
+
+Cpf_cliente varchar(20),
+
+  Num_conta char(7),
+
+
+
+foreign key(Cpf_cliente) references Clinte(cpf),
+
+foreign key(Num_conta) references Conta(numero_conta),
+
+
+
+  primary key(Num_conta, Cpf_cliente ),
+
+   
+
+Data_inicio date
+
+);
+
+
+
+create table Telefone_Cliente(
+
+Cpf_cli varchar(20),
+
+
+
+foreign key(Cpf_cli) references Clinte(cpf),
+
+  telefone varchar(15),
+
+   
+
+  primary key(telefone,Cpf_cli)
+
+
+
+);
+
+insert into banco values
+
+('1','Banco do Brasil'),
+
+('4','CEF');
+
+
+
+
+
+insert into agencia values
+
+(4,'322','Av. Walfredo Macedo Brandao, 1139'),
+
+(1,'1253','R. Bancário Sérgio Guerra, 17')
+
+;
+
+
+
+
+
+insert into cliente values
+
+('111.222.333-44','Bruna Andrade','f','Rua José Firmino Ferreira, 1050'),
+
+('666.777.888-99','Radegondes Silva','m','Av. Epitácio Pessoa, 1008'),
+
+('555.444.777-33','Miguel Xavier','m','Rua Bancário Sérgio Guerra, 640'),
+
+('157.069.777-76','Thiago Germano','f','Rua 30praum, 777');
+
+
+
+
+
+insert into conta values
+
+('22745.05',2,'11765-2',322),
+
+('3100.96',1,'21010-7',1253);
+
+
+
+
+
+insert into historico values
+
+('111.222.333-44','11765-2',STR_TO_DATE('22-12-2015','%d-%m-%Y')),
+
+('666.777.888-99','11765-2',STR_TO_DATE('05-10-2016','%d-%m-%Y')),
+
+('555.444.777-33','21010-7',STR_TO_DATE('29-08-2012','%d-%m-%Y'));
+
+
+
+
+
+insert into Telefone_Cliente values
+
+('111.222.333-44','(83) 3222-1234'),
+
+('666.777.888-99','(83) 99443-9999'),
+
+('666.777.888-99','(83) 3233-2267');
+
+
+
+ALTER TABLE cliente 
+
+
+
+ADD COLUMN pais char(3);
+
+
+
+
+
+ALTER TABLE cliente 
+
+
+
+add column email varchar(200) not null;
+
+
+
+SET FOREIGN_KEY_CHECKS=0; 
+
+delete from conta where numero_conta = '11765-2';
+
+SET FOREIGN_KEY_CHECKS=1; 
+
+
+
+update agencia set Numero_agencia=6342 where Numero_agencia=322;
+
+
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+
+
+alter table conta modify numero_conta char(8);
+
+alter table historico modify Num_conta char(8);
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+update cliente set email='radegondes.silva@gmail.com' where cpf='666.777.888-99';
+
+
+
+update conta set saldo = saldo * 1.10 where numero_conta='21010-7';
+
+
+
+
+
+update cliente set Nome='Bruna Fernandes' where cpf='111.222.333-44';
+
+
+
+
+
+update conta set tipo_conta = 3 WHERE saldo > 10000.00;
